@@ -19,10 +19,14 @@ node /^login\d+$/ {
   include profile::slurm::submitter
   include profile::globus::base
   include profile::singularity
-  include profile::jupyterhub::hub
   include profile::reverse_proxy
   include profile::nfs::client
   include profile::freeipa::client
+}
+
+node /^web\d+$/ {
+  include profile::globus::base
+  include profile::jupyterhub::hub
 }
 
 node /^mgmt1$/ {
