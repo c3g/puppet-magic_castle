@@ -33,7 +33,9 @@ mod 'puppetlabs-mount_core', '1.0.4'
 mod 'puppetlabs-mysql', '13.3.0'
 mod 'puppetlabs-stdlib', '5.2.0'
 mod 'puppetlabs-transition', '0.1.3'
-mod 'treydock-globus', '9.0.0'
+mod 'c3g-globus', 
+	:git => 'https://github.com/c3g/puppet-module-globus.git',
+	:branch => 'main'
 
 mod 'computecanada-jupyterhub',
     :git => 'https://github.com/ComputeCanada/puppet-jupyterhub.git',
