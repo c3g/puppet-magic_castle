@@ -3,7 +3,6 @@ class profile::globus(
   String $organization,
   String $owner,
   String $contact_email,
-  Array[String] $accepted_domains
 
 ) {
   package { 'wget':
@@ -19,7 +18,6 @@ class { 'globus':
   owner          => $owner,
   contact_email  => $contact_email,
   ip_address    => $public_ip,
-  accepted_domains => $accepted_domains,
   users => $users
 }
 
