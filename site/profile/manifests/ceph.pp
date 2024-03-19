@@ -22,9 +22,14 @@ class profile::ceph::client (
 
   $mon_host_string = join($mon_host, ',')
   $ceph_conf = @("EOT")
+    [global]
+    admin socket = /var/run/ceph/$cluster-$name-$pid.asok
+    client reconnect stale = true
+    debug client = 0/2
+    fuse big writes = true
+    mon host = ${mon_host_string}
     [client]
     client quota = true
-    mon host = ${mon_host_string}
     | EOT
 
   file { '/etc/ceph/ceph.conf':
@@ -35,24 +40,23 @@ class profile::ceph::client (
 }
 
 class profile::ceph::client::install (
-  String $release = 'reef',
-  Optional[String] $version = undef,
+  String $ceph_version = 'squid',
 ) {
   include epel
-
-  if $version != undef and $version != '' {
-    $repo = "rpm-${version}"
-  } else {
-    $repo = "rpm-${release}"
-  }
 
   yumrepo { 'ceph-stable':
     ensure        => present,
     enabled       => true,
-    baseurl       => "https://download.ceph.com/${repo}/el${$::facts['os']['release']['major']}/${::facts['architecture']}/",
+    baseurl       => "https://download.ceph.com/rpm-${ceph_version}/el${$::facts['os']['release']['major']}/${::facts['architecture']}/",
     gpgcheck      => 1,
     gpgkey        => 'https://download.ceph.com/keys/release.asc',
     repo_gpgcheck => 0,
+  }
+
+  if versioncmp($::facts['os']['release']['major'], '8') >= 0 {
+    $argparse_pkgname = 'python3-ceph-argparse'
+  } else {
+    $argparse_pkgname = 'python-ceph-argparse'
   }
 
   package {
@@ -60,7 +64,7 @@ class profile::ceph::client::install (
       'libcephfs2',
       'python-cephfs',
       'ceph-common',
-      'python3-ceph-argparse',
+      $argparse_pkgname,
       # 'ceph-fuse',
     ]:
       ensure  => installed,
@@ -77,23 +81,17 @@ define profile::ceph::client::share (
   Optional[Stdlib::Unixpath] $binds_fcontext_equivalence = undef,
 ) {
   $client_fullkey = @("EOT")
-    [client.${name}]
+    [client.${share_name}]
     key = ${access_key}
     | EOT
 
-  file { "/etc/ceph/client.fullkey.${name}":
+  file { "/etc/ceph/ceph.client.${share_name}.keyring":
     content => $client_fullkey,
     mode    => '0600',
     owner   => 'root',
     group   => 'root',
   }
 
-  file { "/etc/ceph/client.keyonly.${name}":
-    content => Sensitive($access_key),
-    mode    => '0600',
-    owner   => 'root',
-    group   => 'root',
-  }
   file { "/mnt/${name}":
     ensure => directory,
   }
@@ -103,7 +101,7 @@ define profile::ceph::client::share (
     ensure  => 'mounted',
     fstype  => 'ceph',
     device  => "${mon_host_string}:${export_path}",
-    options => "name=${share_name},secretfile=/etc/ceph/client.keyonly.${name}",
+    options => "name=${share_name},mds_namespace=cephfs_4_2,x-systemd.device-timeout=30,x-systemd.mount-timeout=30,noatime,_netdev,rw",
     require => File['/etc/ceph/ceph.conf'],
   }
 
