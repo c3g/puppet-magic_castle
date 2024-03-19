@@ -65,7 +65,7 @@ class profile::ceph::client::install {
   yumrepo { 'ceph-stable':
     ensure        => present,
     enabled       => true,
-    baseurl       => "https://download.ceph.com/rpm-nautilus/el${$::facts['os']['release']['major']}/${::facts['architecture']}/",
+    baseurl       => "https://download.ceph.com/rpm-quincy/el${$::facts['os']['release']['major']}/${::facts['architecture']}/",
     gpgcheck      => 1,
     gpgkey        => 'https://download.ceph.com/keys/release.asc',
     repo_gpgcheck => 0,
