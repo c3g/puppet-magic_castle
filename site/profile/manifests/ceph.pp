@@ -23,7 +23,7 @@ class profile::ceph::client (
     ensure  => 'mounted',
     fstype  => 'ceph',
     device  => "${mon_host_string}:${export_path}",
-    options => "name=${share_name},secretfile=/etc/ceph/client.keyonly.${share_name}",
+    options => "name=${share_name},secretfile=/etc/ceph/client.keyonly.${share_name},mds_namespace=cephfs_4_2,x-systemd.device-timeout=30,x-systemd.mount-timeout=30,noatime,_netdev,rw",
     require => Class['profile::ceph::client::config'],
   }
 
@@ -119,9 +119,13 @@ class profile::ceph::client::config (
 
   $mon_host_string = join($mon_host, ',')
   $ceph_conf = @("EOT")
+    admin socket = /var/run/ceph/$cluster-$name-$pid.asok
+    client reconnect stale = true
+    debug client = 0/2
+    fuse big writes = true
+    mon host = ${mon_host_string}
     [client]
     client quota = true
-    mon host = ${mon_host_string}
     | EOT
 
   file { '/etc/ceph/ceph.conf':
