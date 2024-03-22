@@ -3,7 +3,7 @@ CgroupAutomount=no
 <% if versioncmp($slurm_version, '22.05') < 0 { -%>
 AllowedDevicesFile="/etc/slurm/cgroup_allowed_devices_file.conf"
 <% } -%>
-ConstrainCores=yes
+ConstrainCores=no
 <% if $slurm_version == '20.11' { -%>
 TaskAffinity=yes
 <% } -%>
@@ -11,8 +11,8 @@ ConstrainRAMSpace=yes
 ConstrainKmemSpace=no
 ConstrainSwapSpace=yes
 ConstrainDevices=yes
-AllowedRamSpace=100
+AllowedRamSpace=125
 AllowedSwapSpace=0
 MaxRAMPercent=100
 MaxSwapPercent=100
-MinRAMSpace=30
+MinRAMSpace=1000
