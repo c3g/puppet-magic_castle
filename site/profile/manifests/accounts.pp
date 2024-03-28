@@ -11,6 +11,18 @@ class profile::accounts (
   Boolean $manage_project = true,
   Array[Struct[{ filename => String[1], source => String[1] }]] $skel_archives = [],
 ) {
+  Service <| tag == profile::slurm |> -> Service['mkhome']
+  Service <| tag == profile::slurm |> -> Service['mkproject']
+  Service <| tag == profile::freeipa |> -> Service['mkhome']
+  Service <| tag == profile::freeipa |> -> Service['mkproject']
+  Mount <| |> -> Service['mkhome']
+  Mount <| |> -> Service['mkproject']
+
+  $devices = merge (lookup('profile::ceph::client::shares', undef, undef, {}), lookup('profile::nfs::server::devices', undef, undef, {}))
+  $with_home = 'home' in $devices
+  $with_project = 'project' in $devices
+  $with_scratch = 'scratch' in $devices
+
   package { 'rsync':
     ensure => 'installed',
   }
