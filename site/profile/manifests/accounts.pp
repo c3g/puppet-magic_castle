@@ -18,11 +18,6 @@ class profile::accounts (
   Mount <| |> -> Service['mkhome']
   Mount <| |> -> Service['mkproject']
 
-  $devices = merge (lookup('profile::ceph::client::shares', undef, undef, {}), lookup('profile::nfs::server::devices', undef, undef, {}))
-  $with_home = 'home' in $devices
-  $with_project = 'project' in $devices
-  $with_scratch = 'scratch' in $devices
-
   package { 'rsync':
     ensure => 'installed',
   }
