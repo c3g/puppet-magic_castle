@@ -52,7 +52,7 @@ class profile::squid::server (
   squid::http_access { 'CLUSTER_NETWORK CVMFS':
     action => 'allow',
   }
-  squid::cache_dir { '/var/spool/squid':
+  squid::cache_dir { '/localscratch/var/spool/squid':
     type    => 'ufs',
     options => "${cache_size} 16 256",
   }
