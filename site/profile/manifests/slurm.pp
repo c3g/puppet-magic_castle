@@ -599,7 +599,7 @@ class profile::slurm::node {
     group   => 'slurm',
     content => @(EOT/L),
       required /opt/software/slurm/lib64/slurm/cc-tmpfs_mounts.so \
-      bindself=/tmp bindself=/dev/shm target=/localscratch bind=/var/tmp/
+      bindself=/dev/shm target=/localscratch bind=/var/tmp/ bind=/tmp/
       |EOT
   }
 
