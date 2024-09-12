@@ -2,6 +2,7 @@ class profile::squid::server (
   Integer $port,
   Integer $cache_size,
   Array[String] $cvmfs_acl_regex,
+  String $squid_cache_root = '/var/spool/',
 ) {
   include profile::consul
 
@@ -52,7 +53,7 @@ class profile::squid::server (
   squid::http_access { 'CLUSTER_NETWORK CVMFS':
     action => 'allow',
   }
-  squid::cache_dir { '/localscratch/var/spool/squid':
+  squid::cache_dir { "/${squid_cache_root}/squid":
     type    => 'ufs',
     options => "${cache_size} 16 256",
   }
