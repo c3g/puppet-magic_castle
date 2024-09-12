@@ -290,3 +290,12 @@ profile::reverse_proxy::subdomains:
 
 profile::jupyterhub::hub::register_url: "https://mokey.%{lookup('terraform.data.domain_name')}/auth/signup"
 profile::jupyterhub::hub::reset_pw_url: "https://mokey.%{lookup('terraform.data.domain_name')}/auth/forgotpw"
+profile::gpu::install::passthrough::packages:
+  - nvidia-driver-cuda-libs
+  - nvidia-driver
+  - nvidia-driver-devel
+  - nvidia-driver-libs
+  - nvidia-driver-NVML
+  - nvidia-modprobe
+  - nvidia-xconfig
+  - nvidia-persistenced

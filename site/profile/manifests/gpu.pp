@@ -82,6 +82,7 @@ class profile::gpu::install (
 
 class profile::gpu::install::passthrough (
   Array[String] $packages,
+  String $nvidia_driver_stream = '555-dkms'
 ) {
   $os = "rhel${::facts['os']['release']['major']}"
   $arch = $::facts['os']['architecture']
@@ -97,6 +98,16 @@ class profile::gpu::install::passthrough (
     path    => ['/usr/bin'],
   }
 
+  package { 'nvidia-stream':
+    ensure      => present,
+    name        => "nvidia-driver:${nvidia_driver_stream}",
+    provider    => dnfmodule,
+    enable_only => true,
+    require     => [
+      Exec['cuda-repo'],
+    ]
+  }
+
   $mig_profile = lookup("terraform.instances.${facts['networking']['hostname']}.specs.mig", Variant[Undef, Hash[String, Integer]], undef, {})
   class { 'profile::gpu::config::mig':
     mig_profile => $mig_profile,
@@ -106,6 +117,7 @@ class profile::gpu::install::passthrough (
   package { $packages:
     ensure  => 'installed',
     require => [
+      Package['nvidia-stream'],
       Package['kernel-devel'],
       Exec['cuda-repo'],
       Yumrepo['epel'],
