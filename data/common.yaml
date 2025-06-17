@@ -230,6 +230,7 @@ profile::squid::server::cvmfs_acl_regex:
   - '^(object-.*\.cloud\.computecanada\.ca)$'
   - '^(.*-cvmfs\.openhtc\.io)$'
   - '^(cvmfs-.*\.genap\.ca)$'
+  - '^(jn-cvmfs-.*\.calculquebec\.ca)$'
   - '^(.*\.cvmfs\.eessi-infra\.org)$'
   - '^(.*s1\.eessi\.science)$'
 
