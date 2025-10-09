@@ -132,7 +132,7 @@ class profile::slurm::base (
       }
     ),
   }
-  
+
   file { '/etc/slurm/epilog.d':
     ensure => 'directory',
     owner  => 'slurm',

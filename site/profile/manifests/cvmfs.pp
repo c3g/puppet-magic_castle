@@ -39,7 +39,7 @@ class profile::cvmfs::client (
       /cvmfs /etc/auto.cvmfs
       |EOF
   }
-  
+
   file { '/etc/cvmfs/config.d/ref.mugqic.local':
     ensure => 'present',
     owner  => 'root',
@@ -47,7 +47,7 @@ class profile::cvmfs::client (
     source => 'puppet:///modules/profile/cvmfs/ref.mugqic.local',
     mode   => '0644'
   }
-  
+
   file { '/etc/cvmfs/config.d/soft.mugqic.local':
     ensure => 'present',
     owner  => 'root',
