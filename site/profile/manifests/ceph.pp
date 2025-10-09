@@ -40,7 +40,7 @@ class profile::ceph::client (
 }
 
 class profile::ceph::client::install (
-  String $ceph_version = 'squid',
+  String $ceph_version = '19.2.2',
 ) {
   include epel
 
