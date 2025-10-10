@@ -23,7 +23,7 @@ class profile::ceph::client (
   $mon_host_string = join($mon_host, ',')
   $ceph_conf = @("EOT")
     [global]
-    admin socket = /var/run/ceph/$cluster-$name-$pid.asok
+    admin socket = /var/run/ceph/cephfs.asok
     client reconnect stale = true
     debug client = 0/2
     fuse big writes = true
@@ -40,7 +40,7 @@ class profile::ceph::client (
 }
 
 class profile::ceph::client::install (
-  String $ceph_version = 'squid',
+  String $ceph_version = '19.2.2',
 ) {
   include epel
 

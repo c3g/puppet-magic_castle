@@ -12,17 +12,17 @@ class profile::globus(
   }
 
   $public_ip = lookup("terraform.instances.${facts['networking']['hostname']}.public_ip")
-  $users = lookup("profile::users::ldap::users")
+  $users = lookup('profile::users::ldap::users')
 
   class { 'globus':
-    display_name   => $display_name,
-    organization   => $organization,
-    owner          => $owner,
-    contact_email  => $contact_email,
-    ip_address    => $public_ip,
+    display_name     => $display_name,
+    organization     => $organization,
+    owner            => $owner,
+    contact_email    => $contact_email,
+    ip_address       => $public_ip,
     accepted_domains => $accepted_domains,
-    exposed_paths => $exposed_paths,
-    users => $users
+    exposed_paths    => $exposed_paths,
+    users            => $users
   }
 
 }
