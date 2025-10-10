@@ -23,7 +23,7 @@ class profile::ceph::client (
   $mon_host_string = join($mon_host, ',')
   $ceph_conf = @("EOT")
     [global]
-    admin socket = /var/run/ceph/$cluster-$name-$pid.asok
+    admin socket = /var/run/ceph/${cluster}-${name}-${pid}.asok
     client reconnect stale = true
     debug client = 0/2
     fuse big writes = true

@@ -15,14 +15,14 @@ class profile::globus(
   $users = lookup("profile::users::ldap::users")
 
   class { 'globus':
-    display_name   => $display_name,
-    organization   => $organization,
-    owner          => $owner,
-    contact_email  => $contact_email,
-    ip_address    => $public_ip,
+    display_name     => $display_name,
+    organization     => $organization,
+    owner            => $owner,
+    contact_email    => $contact_email,
+    ip_address       => $public_ip,
     accepted_domains => $accepted_domains,
-    exposed_paths => $exposed_paths,
-    users => $users
+    exposed_paths    => $exposed_paths,
+    users            => $users
   }
 
 }
