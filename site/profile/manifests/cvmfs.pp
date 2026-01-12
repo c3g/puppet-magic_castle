@@ -45,6 +45,24 @@ class profile::cvmfs::client (
     require => Package['cvmfs']
   }
 
+  file { '/etc/cvmfs/config.d/ref.mugqic.local':
+    ensure => 'present',
+    owner  => 'root',
+    group  => 'root',
+    source => 'puppet:///modules/profile/cvmfs/ref.mugqic.local',
+    mode   => '0644'
+  }
+
+  file { '/etc/cvmfs/config.d/soft.mugqic.local':
+    ensure => 'present',
+    owner  => 'root',
+    group  => 'root',
+    source => 'puppet:///modules/profile/cvmfs/soft.mugqic.local',
+    mode   => '0644'
+  }
+
+
+
   file { '/etc/cvmfs/default.local.ctmpl':
     content => epp('profile/cvmfs/default.local', {
         'strict_mount' => $strict_mount ? { true => 'yes', false => 'no' }, # lint:ignore:selector_inside_resource
