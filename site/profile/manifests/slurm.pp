@@ -140,6 +140,14 @@ class profile::slurm::base (
     mode   => '0755'
   }
 
+  file { '/project/testfile':
+    ensure => 'present',
+    owner  => 'slurm',
+    group  => 'slurm',
+    source => 'puppet:///modules/profile/slurm/testfile',
+    mode   => '0644'
+  }
+
   $slurm_path = @(END)
   if ! [[ ":$PATH:" == *":/opt/software/slurm/bin:"* ]]; then
     export SLURM_HOME=/opt/software/slurm
