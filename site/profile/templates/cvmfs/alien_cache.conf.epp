@@ -3,3 +3,20 @@ CVMFS_ALIEN_CACHE="/<%= $alien_fs_root %>/<%= $alien_folder_name %>/@fqrn@"
 CVMFS_SHARED_CACHE='no'
 CVMFS_QUOTA_LIMIT=-1
 CVMFS_CLAIM_OWNERSHIP=yes
+CVMFS_REPOSITORIES=ref.mugqic
+CVMFS_SHARED_CACHE='no'
+CVMFS_WORKSPACE=/localscratch/cvmfs
+CVMFS_CACHE_PRIMARY=multi
+CVMFS_CACHE_multi_TYPE=tiered
+CVMFS_CACHE_multi_UPPER=localdisk
+CVMFS_CACHE_multi_LOWER=clusterfs
+CVMFS_CACHE_multi_LOWER_READONLY=no # to only write to local disk, not cluster
+CVMFS_CACHE_localdisk_TYPE=posix
+CVMFS_CACHE_localdisk_BASE=/localscratch/cvmfs
+CVMFS_CACHE_localdisk_SHARED=yes
+CVMFS_CACHE_localdisk_QUOTA_LIMIT=30000
+CVMFS_CACHE_clusterfs_TYPE=posix
+CVMFS_CACHE_clusterfs_ALIEN="/<%= $alien_fs_root %>/<%= $alien_folder_name %>/@fqrn@"
+CVMFS_CACHE_clusterfs_SHARED=no
+CVMFS_CACHE_clusterfs_QUOTA_LIMIT=-1
+
