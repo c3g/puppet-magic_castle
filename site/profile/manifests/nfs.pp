@@ -21,10 +21,9 @@ class profile::nfs::client (
   }
 
   $instances = lookup('terraform.instances')
-  $nfs_server = Hash($instances.map| $key, $values | { [$values['local_ip'], $key] })[$server_ip]
-  $nfs_volumes = $instances.dig($nfs_server, 'volumes', 'nfs')
+  $instances_by_ip = Hash($instances.map| $key, $values | { [$values['local_ip'], $values] })
+  $nfs_volumes = $instances_by_ip.get("${server_ip}.volumes.nfs", {})
   $shares_to_mount = keys($nfs_volumes) + $share_names
-
 
   $self_volumes = lookup('terraform.self.volumes')
   if $facts['virtual'] =~ /^(container|lxc).*$/ {
