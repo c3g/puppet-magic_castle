@@ -102,6 +102,7 @@ define profile::users::ldap_user (
   Array[String] $groups = [],
   Array[String] $public_keys = [],
   Integer[0] $count = 1,
+  String $globus_id =  ''
   Boolean $manage_password = true,
   Optional[String[1]] $passwd = undef,
 ) {
