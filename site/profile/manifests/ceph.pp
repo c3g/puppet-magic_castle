@@ -39,15 +39,23 @@ class profile::ceph::client (
   ensure_resources(profile::ceph::client::share, $shares, { 'mon_host' => $mon_host, 'bind_mounts' => [] })
 }
 
+
 class profile::ceph::client::install (
-  String $ceph_version = '19.2.2',
+  String $release = 'squid',
+  Optional[String] $version = undef,
 ) {
   include epel
+
+  if $version != undef and $version != '' {
+    $repo = "rpm-${version}"
+  } else {
+    $repo = "rpm-${release}"
+  }
 
   yumrepo { 'ceph-stable':
     ensure        => present,
     enabled       => true,
-    baseurl       => "https://download.ceph.com/rpm-${ceph_version}/el${$::facts['os']['release']['major']}/${::facts['architecture']}/",
+    baseurl       => "https://download.ceph.com/${repo}/el${$::facts['os']['release']['major']}/${::facts['os']['architecture']}/",
     gpgcheck      => 1,
     gpgkey        => 'https://download.ceph.com/keys/release.asc',
     repo_gpgcheck => 0,
